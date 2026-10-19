@@ -1,0 +1,11 @@
+{
+    "id": "cornucopia",
+    "name": "Cornucopia",
+    "author": [ "Glitchkat10 & GeorgeTheRat" ],
+    "description": "An entrée of... bugs?",
+    "prefix": "cor",
+    "main_file": "main.lua",
+    "version": "0.1.0-alpha",
+    "icon_path": "icon.png",
+    "tags": [ "vanilla_balance" ]
+}
