@@ -1,0 +1,47 @@
+[manifest]
+version = "1.0.0"
+
+# lang mod (pluralization & ordinalization)
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = '''
+assembled_string = assembled_string..(type(subpart) == 'string' and subpart or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
+'''
+position = "at"
+match_indent = true
+payload = '''
+-- cor patch
+assembled_string = assembled_string..(type(subpart) == 'string' and subpart or (COR.process_ordinal and COR.process_ordinal(subpart[1], args.vars)) or (COR.pluralize and COR.pluralize(subpart[1], args.vars)) or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
+-- patch end
+'''
+
+# hide card limit info_queue for cor items
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+match_indent = true
+position = 'at'
+pattern = '''
+if not hide_desc and card and card.ability and (card.ability.extra_slots_used or 0) ~= 0 then
+'''
+payload = '''
+-- cor patch
+if not hide_desc and card and card.ability and (card.ability.extra_slots_used or 0) ~= 0 and not (card.config.center and card.config.center.key and string.find(card.config.center.key, "cor_")) then
+-- patch end
+'''
+
+# prev cont.
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+match_indent = true
+position = 'at'
+pattern = '''
+if not hide_desc and card and card.ability and (card.ability.card_limit or 0) ~= 0 then
+'''
+payload = '''
+-- cor patch
+if not hide_desc and card and card.ability and (card.ability.card_limit or 0) ~= 0 and not (card.config.center and card.config.center.key and string.find(card.config.center.key, "cor_")) then
+-- patch end
+'''
